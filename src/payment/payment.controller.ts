@@ -32,4 +32,5 @@ export class PaymentController {
     async deletePayment(@Param('id') id: string): Promise<Payment> {
         return this.paymentService.deleteById(id);
     }
+    
 }

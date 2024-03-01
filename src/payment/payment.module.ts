@@ -10,5 +10,3 @@ import { PaymentSchema } from './schemas/payment.schemas';
   providers: [PaymentService]
 })
 export class PaymentModule {}
-
-

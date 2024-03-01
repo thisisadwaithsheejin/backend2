@@ -27,7 +27,7 @@ export class Payment{
     @Prop({ default: generateReferenceId })
     p_referenceid: string;
 
-    @Prop()
+    @Prop() 
     currency:string
 }   
 
