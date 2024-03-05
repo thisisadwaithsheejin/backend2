@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Wallet } from './schemas/wallet.schemas';
 import mongoose from 'mongoose';
@@ -9,22 +9,36 @@ export class WalletService {
         @InjectModel(Wallet.name)
         private walletModel: mongoose.Model<Wallet>,
     ){}
-    async findAll(): Promise<Wallet[]>{
-        const wallets = await this.walletModel.find()
-        return wallets;   
-    }
-
-    async updateWalletAndGiveBonus(customerId: any, amount: number) {
-        let wallet = await this.walletModel.findOne({ customer: customerId });
-        if (!wallet) {   
-            wallet = await this.walletModel.create({ customer: customerId });
+    async findByCustomer(customerId:string):Promise<Wallet>{
+        const wallet = await this.walletModel.findOne({customer:customerId});
+        if(!wallet){
+            throw new NotFoundException('Wallet not found');
         }
-        wallet.balance += amount;
-        if (wallet.balance >= 1000) {
-        const bonusPoints = Math.floor(wallet.balance / 1000) * 10;
-        wallet.balance += bonusPoints;
-        wallet.balance %= 1000;
-        }
-        await wallet.save();
+        return wallet;
     }
+    async create(wallet:Wallet):Promise<Wallet>{
+        const createdWallet = await this.walletModel.create(wallet);
+        await this.giveBonus(wallet.customer.toString());
+        return createdWallet;
+    }
+    async getWalletBycustomer(customerId:string):Promise<Wallet>{
+        const wallet = await this.walletModel.findOne({customer:customerId});
+        if(!wallet){
+            throw new NotFoundException('wallet not found');
+        }
+        wallet.bonus = Math.floor(wallet.total/1000)*10;
+        return wallet;
+    }
+    async updateWallet(customerId:string , totalAmount:number):Promise<void>{
+        await this.walletModel.updateOne(
+            {customer:customerId},
+            {total:totalAmount}
+        )
+    }
+    async giveBonus(customerId:string):Promise<void>{
+        await this.walletModel.updateOne(
+            {customer:customerId},
+            {$inc:{total:10,bonus:10}}
+        )
+    }   
 }

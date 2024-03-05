@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { SchemaTypes, Types } from "mongoose";
-import { Payment } from "src/payment/schemas/payment.schemas";
+import { User } from "src/auth/schemas/user.schemas";
 
 @Schema({
     timestamps:true
@@ -9,10 +9,13 @@ import { Payment } from "src/payment/schemas/payment.schemas";
 export class Wallet{
     
     @Prop({default:0})
-    balance:number;
+    total:number;
 
-    @Prop({type:SchemaTypes.ObjectId,ref:Payment.name})
+    @Prop({type:SchemaTypes.ObjectId,ref:User.name})
     customer:Types.ObjectId;
+
+    @Prop({default:0})
+    bonus:number;
 
 }
 export const WalletSchema = SchemaFactory.createForClass(Wallet)

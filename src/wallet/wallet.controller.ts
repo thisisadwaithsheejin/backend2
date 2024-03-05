@@ -1,4 +1,4 @@
-import { Controller , Get} from '@nestjs/common';
+import { Body, Controller , Get, Param, Post} from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { Wallet } from './schemas/wallet.schemas';
 
@@ -6,8 +6,13 @@ import { Wallet } from './schemas/wallet.schemas';
 export class WalletController {
     constructor(private walletService: WalletService) {}
 
-    @Get()
-    async getAllWallet(): Promise<Wallet[]> {
-        return this.walletService.findAll();
+    @Get(':customerId')
+    async getWalletBycustomer(@Param('customerId')customerId:string):Promise<Wallet>{
+        return this.walletService.findByCustomer(customerId);
     }
+    @Post()
+    async createWallet(@Body() wallet:Wallet):Promise<Wallet>{
+        return this.walletService.create(wallet);
+    }
+
 }
