@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { SchemaTypes, Types } from "mongoose";
+import { User } from "src/auth/schemas/user.schemas";
 import { Store } from "src/store/schemas/store.schemas";
 
 export enum Status{
@@ -12,8 +13,8 @@ export enum Status{
     timestamps:true
 })
 export class Payment{
-    @Prop()
-    p_customer:string;
+    @Prop({type:SchemaTypes.ObjectId,ref:User.name})
+    p_customer:Types.ObjectId;
 
     @Prop()
     p_amount:number;

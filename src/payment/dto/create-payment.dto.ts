@@ -1,11 +1,11 @@
 import { IsEnum, IsMongoId, IsNotEmpty, IsString } from "class-validator";
-import { Types } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 import { Status } from "../schemas/payment.schemas";
 
 export class createPaymentDto{
     @IsNotEmpty()
     @IsString()
-    readonly p_customer:string;
+    readonly p_customer:any;
 
     @IsNotEmpty()
     @IsString()
