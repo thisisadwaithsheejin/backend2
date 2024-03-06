@@ -45,8 +45,6 @@ export class PaymentService {
 
     private async updateWalletAndBonus(payment:Payment):Promise<void>{
         const customer = payment.p_customer.toString();
-        console.log('cuhh',customer);
-        
         const amount = payment.p_amount;
         const currentTotal = await this.paymentModel.aggregate([
             {$match:{
@@ -59,7 +57,6 @@ export class PaymentService {
               }  
             }
         ]);
-        console.log('hjhj',currentTotal);
         
         const totalAmount =currentTotal.length>0 ? currentTotal[0].totalAmount:0;
         await this.walletService.updateWallet(customer,totalAmount+amount);
@@ -72,5 +69,4 @@ export class PaymentService {
             await this.walletService.giveBonus(customer); 
         }
     }
-
 }

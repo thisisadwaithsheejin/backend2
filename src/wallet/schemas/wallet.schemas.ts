@@ -7,6 +7,12 @@ import { User } from "src/auth/schemas/user.schemas";
 })
 
 export class Wallet{
+
+    @Prop({default:0})
+    oldValue:number;
+
+    @Prop({default:0})
+    newValue : number;
     
     @Prop({default:0})
     total:number;
@@ -18,4 +24,4 @@ export class Wallet{
     bonus:number;
 
 }
-export const WalletSchema = SchemaFactory.createForClass(Wallet)
+export const WalletSchema = SchemaFactory.createForClass(Wallet) 

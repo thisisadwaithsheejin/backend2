@@ -8,11 +8,11 @@ export class WalletController {
 
     @Get(':customerId')
     async getWalletBycustomer(@Param('customerId')customerId:string):Promise<Wallet>{
-        return this.walletService.findByCustomer(customerId);
+        return this.walletService.getWalletBycustomer(customerId);
     }
+    
     @Post()
     async createWallet(@Body() wallet:Wallet):Promise<Wallet>{
         return this.walletService.create(wallet);
     }
-
 }
